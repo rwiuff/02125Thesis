@@ -4,5 +4,20 @@ In the world of designing integrated systems on chips, it is crucial to describe
 \subsection{The UVM methodology}
 Using UVM, one have to built testbench components. These include e.g. drivers for converting tests into proper DUT stimulus, monitors for reading the state of the DUT and scoreboards for comparing expected behavior to actual behavior, etc. UVM has the great benefit, that once these components have been defined, they can be reused within the scope of some system of designs. This means a high overhead, with high reusability.
 \subsection{Current verification tools}
-In todays landscape a myriad of verification tools exists. Projects like Chisel\footnote{On Github: \href{https://github.com/chipsalliance/chisel}{github.com/chipsalliance/chisel}} and it's forked project SpinalHDL\footnote{On Github: \href{https://github.com/SpinalHDL/SpinalHDL}{github.com/SpinalHDL/SpinalHDL}} discards the traditional SystemVerilog languages and testbenches altogether and implements their own description languages and pyuvm\footnote{On Github: \href{https://github.com/pyuvm/pyuvm}{github.com/pyuvm/pyuvm}} takes UVM into python.
-\cite{reddy_formal_2024}\cite{noauthor_ieee_2024}
+In todays landscape a myriad of verification tools exists. Projects like Chisel\footnote{On Github: \href{https://github.com/chipsalliance/chisel}{github.com/chipsalliance/chisel}} and it's forked project SpinalHDL\footnote{On Github: \href{https://github.com/SpinalHDL/SpinalHDL}{github.com/SpinalHDL/SpinalHDL}} discards the traditional hardware description languages and testbenches altogether and implements their own, and pyuvm\footnote{On Github: \href{https://github.com/pyuvm/pyuvm}{github.com/pyuvm/pyuvm}} takes UVM into python using cocotb\footnote{cocotb on the web: \href{https://www.cocotb.org/}{www.cocotb.org/}} as a backend driver. These tools do however have some problems. Chisel and SpinalHDL requires developers to learn a new description language, which means the communities of developers are small, increasing slowly. pyuvm uses Python which itself is an intepreted language, meaning its runtime ressource requirements do not scale well on large projects.
+\subsection{The case against UVM and the mighty ABV}
+Chip verification is inherently done by hardware designers and engineers and UVM is inherently created by and for hardware designers. When software engineers verify their software, they use unit tests and assertions along with formal proofs. In recent years these approaches have been adopted by hardware designers. \emph{Assertion Based Verification}, or ABV, along with formal verification is increasingly being applied to complex computing chip design verification and increases performance metrics over classic UVM\cite{reddy_formal_2024}. Key impacts from this paper is summarised on \cref{tbl:ABVOverUVM}.
+\begin{table}[H]
+    \centering
+    \caption{Key impact of formal verification adoption over UVM\cite{reddy_formal_2024}}\label{tbl:ABVOverUVM}
+    \begin{tabular}{l}
+        \toprule
+        Verification cycles reduced by 25-30\%             \\
+        Pre-silicon bug detection rates improved by 20\%   \\
+        Security vulnerability detection increased by 40\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+\emph{SystemVerilog Assertions}, or SVA has been defined in IEEE 1800-2023\cite[Chapter 16]{noauthor_ieee_2024} meaning ABV is already a part of the SystemVerilog syntax.
+\subsection{The goal of this project}
+The goal of this project is a framework written in a strongly typed language, supporting SystemVerilog and core ideas from ABV, thus making it easy for designers to write their designs in SystemVerilog and use a well known language to implement assertion based tests.\newline Introducing \emph{SteelBrew}, the chip verification framework written in Java.
