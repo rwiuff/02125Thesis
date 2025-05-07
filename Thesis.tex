@@ -1,0 +1,206 @@
+% LTeX: language=en-GB
+%Basics
+\documentclass[a4paper, english]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[bitstream-charter, cal=cmcal]{mathdesign}
+\usepackage{babel}
+\usepackage{csquotes}
+\usepackage[moderate, mathspacing=normal]{savetrees}
+%Author(s), Course variables
+\newcommand{\lb}{\\}
+\newcommand{\titl}{Verification of digital circuits using Java\xspace}
+\newcommand{\auth}{Rasmus Wiuff\xspace}
+\newcommand{\NO}{s163977\xspace}
+\newcommand{\presub}{02125\xspace}
+\newcommand{\aftersub}{Bachelor Project\xspace}
+\newcommand{\datum}{\emph{Draft}}
+%Symbols and scientifics
+\usepackage{bm}
+\usepackage{physics}
+\usepackage{mathtools}
+\numberwithin{equation}{section}
+
+% ------------------------------------------
+%      For siunitx insert siux snippet      
+% ------------------------------------------
+
+%Appendix, TOC and Bibliography
+\usepackage{appendix}
+\renewcommand\appendixtocname{Bilag}
+\usepackage[nottoc]{tocbibind}
+\setcounter{tocdepth}{2}
+\usepackage{lastpage}
+
+%Figures
+\usepackage[svgnames]{xcolor} % Required to specify font color
+\usepackage{float}
+\usepackage{graphicx}
+    \graphicspath{{C:/Users/rwiuf/Dropbox/LaTeXgraphics}}
+\newcommand{\documentlogo}{DTU}
+\usepackage{subcaption}
+\usepackage[format=plain,
+    labelfont={bf,it,footnotesize},
+    textfont={it,footnotesize}]{caption}
+\captionsetup{font={stretch=0.9}}
+\usepackage[centering, rmargin=2.5cm, tmargin=2.5cm, lmargin=2.5cm, bmargin=3.5cm]{geometry}
+\usepackage[final]{pdfpages}
+\usepackage{multirow}
+\usepackage{fontawesome}
+\usepackage{xspace}
+\usepackage{tikz}
+\usetikzlibrary{positioning, automata}
+
+% ------------------------------------------
+% For semantic tableaux insert treex snippet
+% ------------------------------------------
+
+%Header footer
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\titl \lb \presub \aftersub}
+\chead{\includegraphics[width=.05\textwidth]{\documentlogo}}
+\rhead{\auth \lb \NO}
+\cfoot{Page \thepage\, of\, \pageref*{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\setlength{\headheight}{36.75034pt}
+%Text tools
+\usepackage{listings}
+\usepackage{parcolumns}
+\usepackage[super]{nth}
+\usepackage[normalem]{ulem}
+\usepackage{import}
+\usepackage{lipsum}
+\usepackage{microtype}
+\usepackage[pdfencoding=auto, psdextra]{hyperref}
+\hypersetup{
+    colorlinks   = true, %Colours links instead of ugly boxes
+    urlcolor     = blue, %Colour for external hyperlinks
+    linkcolor    = blue, %Colour of internal links
+    citecolor   = red %Colour of citations
+}
+\usepackage[capitalise]{cleveref}
+\usepackage{tabularray}
+\UseTblrLibrary{booktabs}
+\usepackage{todonotes}
+\usepackage{biblatex}
+\addbibresource{bibliography.bib}
+
+% ----------------------------------------
+% For minted listing insert mintex snippet
+% ----------------------------------------
+
+%Definitions and new commands
+\newcommand{\degr}{^{\circ}}
+\newcommand{\me}{\mathrm{e}}
+
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\ddd}[0]{, \ldots, } % , ...,
+
+% Logic.
+\newcommand{\fall}[0]{~\forall}
+\newcommand{\exst}[0]{~\exists}
+\newcommand{\is}[0]{\mathrel{:}}
+\newcommand{\from}[0]{\mathop{~:~}}
+
+% Sets.
+\newcommand{\nin}[0]{\not\in}
+\newcommand{\with}[0]{\mathrel{|}}
+\newcommand{\powerof}[1]{\mathcal{P}\left(#1\right)} % P(Set)
+\newcommand{\power}[1]{2^#1} % 2^Set
+\newcommand{\len}[1]{\ensuremath{|#1|}}
+\newcommand{\eset}[0]{\emptyset}
+
+% Numbers.
+\newcommand{\N}[0]{\mathbb{N}}
+\newcommand{\Z}[0]{\mathbb{Z}}
+\newcommand{\Q}[0]{\mathbb{Q}}
+\newcommand{\R}[0]{\mathbb{R}}
+
+% Functions.
+\newcommand{\cif}[0]{\text{, if }}
+\newcommand{\els}[0]{\text{, otherwise}}
+
+% Probability.
+\newcommand{\probs}[1]{\operatorname{Pr}{\left[#1\right]}}
+\newcommand{\expected}[1]{\mathrm{E}[#1]}
+\newcommand{\given}[0]{\mathrel{|}}
+
+% Complexity.
+\renewcommand{\O}[0]{\ensuremath{\mathcal{O}}} % Big-O-Notation
+
+% Bit macros
+\newcommand{\bitzero}{\text{\textcolor{DTUred}{\fontfamily{fvm}\selectfont 0}}}
+\newcommand{\bitone}{\text{\textcolor{DTUred}{\fontfamily{fvm}\selectfont 1}}}
+
+%Title and sectioning
+\def\Vhrulefill{\leavevmode\leaders\hrule height 0.7ex depth \dimexpr0.4pt-0.7ex\hfill\kern0pt}
+\usepackage{titlesec}
+\definecolor{DTUred}{cmyk}{0, .91, .72, .23}
+\definecolor{FMNgrey}{cmyk}{.73,.43,.53,.38}
+%Use letters insted of numbers in section numbering
+% \renewcommand{\thesection}{\Alph{section}}
+% \renewcommand{\thesubsection}{\Alph{subsection}}
+
+% -------------------------------------------
+% For pseudocode setup insert pseudox snippet
+% -------------------------------------------
+
+\begin{document}
+
+\titleformat{\section}[block]
+{\normalfont\Large\scshape\filright\color{DTUred}}{\fbox{\thesection}}{1em}{}
+
+\titleformat{\subsection}
+{\titlerule
+    \vspace{.8ex}%
+    \normalfont\scshape\color{FMNgrey}}
+{\thesubsection.}{.5em}{}
+
+\titleformat{\subsubsection}[wrap]
+{\normalfont\fontseries{b}\selectfont\filright}
+{\thesubsubsection.}{.5em}{}
+\titlespacing{\subsubsection}
+{12pc}{1.5ex plus .1ex minus .2ex}{1pc}
+
+\title{\vspace{-5em}\includegraphics[width=.15\textwidth]{\documentlogo}\lb\vspace{.5em}\Huge\scshape\color{DTUred} \titl\lb\vspace{-4mm}\rule{4cm}{0.5mm}\lb\Large{\presub \aftersub}}
+\author{by \auth \textbf{\NO}\lb \href{mailto:s163977@dtu.dk}{s163977@dtu.dk}\vspace{2.5em}\lb Supervisor: Martin Schoeberl\lb\href{mailto:masca@dtu.dk}{masca@dtu.dk}}
+\date{\datum}
+
+\maketitle
+
+\begin{abstract}
+    \todo[inline]{Add abstract}
+\end{abstract}
+
+\pagenumbering{arabic}
+
+\thispagestyle{empty}
+\setcounter{page}{0}
+\newpage
+\listoftodos
+\tableofcontents
+\addtocontents{toc}{~\hfill\textbf{Page}\par}
+\setcounter{page}{1}
+\newpage
+
+\include{sections/01Summary}
+\include{sections/02Introduction}
+\include{sections/03Problem}
+\include{sections/04Design}
+\include{sections/05Implementation}
+\include{sections/06Testing}
+\include{sections/07Conclusion}
+%Bibliography herunder:
+%\newpage
+\printbibliography[heading=bibintoc]
+\listoffigures
+\listoftables
+%\newpage
+
+%Appendicer herunder:
+
+%\input{Appendix.tex}
+
+\end{document}
