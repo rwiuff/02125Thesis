@@ -2,5 +2,24 @@
 \section{Problem specification and analysis}\label{sec:03}
 As mentioned in \cref{sec:02} this project aims to implement a testing framework for SystemVerilog designs, using core ideas of Assertion Based Verification, written in Java. This poses the following challenges:
 \begin{itemize}
-    \item 
+    \item \textbf{Simulation driver:} The framework needs to communicate with some simulation driver.
+    \item \textbf{Peek-poke-step:} Signal manipulation needs to be implemented to set up and carry out assertion of behavior.
+    \item \textbf{Assertion-logic: } ABV logic has to be implemented in the framework.
+    \item \textbf{Test translation:} The framework has to translate test logic from Java to SystemVerilog and create a testbench for test simulation.
+    \item \textbf{Coroutines/concurrency:} As assertions can be time-invariant, it makes sense to implement concurrency or coroutines to efficiently execute the simulation.
 \end{itemize}
+\subsection{Simulation driver}
+Driving the simulations is not part of the scope of this project. Instead the simulations are run by a third-party tool using Java to invoke the tool and listen for the results. 
+\subsection{Peek-poke-step}
+Using the Java BigInt class, some logic for manipulating bits needs to be implemented in order to set up tests.
+\subsection{Assertion-logic}
+There are some assertion directives of interest:
+\begin{enumerate}
+    \item Assert which raises an exception if some property does not hold.
+    \item Cover which moniters the coverage of some property.
+\end{enumerate}
+These are the minimum that should be implemented. Some object for a test should be created and react if the driver raises an exception pertaining to the used directive.
+The logic in the framework needs to adhere to the logic stated in the SVA documentation.
+\subsection{Test translation}
+
+\subsection{Coroutines/concurrency}
