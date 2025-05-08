@@ -1,25 +1,55 @@
+% LTeX: language=en-GB
 % !TeX root = ..\Thesis.tex
 \section{Problem specification and analysis}\label{sec:03}
 As mentioned in \cref{sec:02} this project aims to implement a testing framework for SystemVerilog designs, using core ideas of Assertion Based Verification, written in Java. This poses the following challenges:
 \begin{itemize}
     \item \textbf{Simulation driver:} The framework needs to communicate with some simulation driver.
-    \item \textbf{Peek-poke-step:} Signal manipulation needs to be implemented to set up and carry out assertion of behavior.
+    \item \textbf{Peek-poke-step:} Signal manipulation needs to be implemented to set up and carry out assertion of behaviour.
     \item \textbf{Assertion-logic: } ABV logic has to be implemented in the framework.
     \item \textbf{Test translation:} The framework has to translate test logic from Java to SystemVerilog and create a testbench for test simulation.
     \item \textbf{Coroutines/concurrency:} As assertions can be time-invariant, it makes sense to implement concurrency or coroutines to efficiently execute the simulation.
 \end{itemize}
 \subsection{Simulation driver}
-Driving the simulations is not part of the scope of this project. Instead the simulations are run by a third-party tool using Java to invoke the tool and listen for the results. 
+Driving the simulations is not part of the scope of this project. Instead, the simulations are run by a third-party tool using Java to invoke the tool and listen for the results. Verilator\footnote{Verilator on the web: \href{https://www.veripool.org/verilator/}{veripool.org/verilator}} is a fast and community-driven simulator for SystemVerilog, which supports SVA directives. Through testbenches it is possible to set up and test DUT's fairly easily.
 \subsection{Peek-poke-step}
-Using the Java BigInt class, some logic for manipulating bits needs to be implemented in order to set up tests.
+Using the Java BigInt class, some logic for manipulating bits needs to be implemented in order to set up tests. BigInt enables describing integers in other bases, as is common in hardware design or low-level programming.
 \subsection{Assertion-logic}
 There are some assertion directives of interest:
 \begin{enumerate}
     \item Assert which raises an exception if some property does not hold.
-    \item Cover which moniters the coverage of some property.
+    \item Cover which monitors the coverage of some property.
 \end{enumerate}
 These are the minimum that should be implemented. Some object for a test should be created and react if the driver raises an exception pertaining to the used directive.
 The logic in the framework needs to adhere to the logic stated in the SVA documentation.
 \subsection{Test translation}
-
+Manipulation and assertions has to be properly translated into a testbench that, when run, carries out the verification. This should be done in a manner that translates the test logic into a series of strings that are placed correctly within a testbench.
 \subsection{Coroutines/concurrency}
+To optimise runtime, it is desirable to run tests concurrently. For this purpose there are two options:
+\begin{enumerate}
+    \item Java Runnable
+    \item Coroutines
+\end{enumerate}
+\subsubsection{Java Runnable}
+The Java Runnable interface\footnote{Documentation on Oracle: \href{https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html}{docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html}} enables thread creation and joining. Benefits include the native support for Java and the documentation and community surrounding developing with Runnable. The main disadvantage is that threads rely on the operating system's scheduler, thus removing some degree of control during execution, and in the worst case, if not run in an elevated mode, threads might not get priority to run.
+\subsubsection{Coroutines}
+Coroutines are described as ``light threads'' and enables a thread to control its own behaviour. This means threads can execute with a high degree of control. Disadvantages is that Java does not natively support coroutines. Solutions include hacking the JVM or using third party projects to execute coroutines. One such example is Javaflow\footnote{Javaflow on Apache: \href{https://commons.apache.org/sandbox/commons-javaflow/}{commons.apache.org/sandbox/commons-javaflow/}} from Apache Commons or an interesting project called ``Coroutines''\footnote{Coroutines on GitHub: \href{https://github.com/offbynull/coroutines}{github.com/offbynull/coroutines}} inspired by Javaflow.
+\subsection{Goals and success criteria}
+The discussed challenges and their solutions are listed on \cref{tbl:criteria}.
+\begin{table}[H]
+    \centering
+    \caption{The projects challenges and success criteria}\label{tbl:criteria}
+    \begin{tabular}{lll}
+        \toprule
+        \# & Challenge              & Success Criteria                                                            \\
+        \midrule
+        1  & Simulation driver      & Logic that launches Verilator and handles communication with the processes. \\
+        2  & Peek-poke-step         & Logic that, using BigInt, manipulates wires and ports in the tests.         \\
+        3  & Assertion-logic        & Logic that sets up assertion directives supported by the driver             \\
+           &                        & and SVA to support ABV.                                                     \\
+        4  & Test-translation       & Logic that translates the written test into a testbench that when executed, \\
+           &                        & ensures the tests are carried out correctly.                                \\
+        5  & Coroutines/concurrency & Implementation of concurrent execution of the simulations.                  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+SteelBrew will be developed in an Agile way, based on use-cases. This ensures that a viable product is ready after dealing with challenge 1, 2 and 4 as these deals with setting up basic test functionality. Afterwards assertion logic, concluding with coroutines.

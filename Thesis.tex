@@ -27,7 +27,7 @@
 
 %Appendix, TOC and Bibliography
 \usepackage{appendix}
-\renewcommand\appendixtocname{Bilag}
+% \renewcommand\appendixtocname{Bilag}
 \usepackage[nottoc]{tocbibind}
 \setcounter{tocdepth}{2}
 \usepackage{lastpage}
@@ -185,13 +185,13 @@
 \setcounter{page}{1}
 \newpage
 
-\include{sections/01Summary}
-\include{sections/02Introduction}
-\include{sections/03Problem}
-\include{sections/04Design}
-\include{sections/05Implementation}
-\include{sections/06Testing}
-\include{sections/07Conclusion}
+\input{sections/01Summary}
+\input{sections/02Introduction}
+\input{sections/03Problem}
+\input{sections/04Design}
+\input{sections/05Implementation}
+\input{sections/06Testing}
+\input{sections/07Conclusion}
 %Bibliography herunder:
 %\newpage
 \printbibliography[heading=bibintoc]
