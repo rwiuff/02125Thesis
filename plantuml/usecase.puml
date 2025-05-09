@@ -1,0 +1,14 @@
+@startuml usecase
+left to right direction
+actor User as us
+package SteelBrew{
+    usecase "add DUT" as DUT
+    usecase "add test" as TEST
+    usecase "configure test" as ENV
+    usecase Simulate as SIM
+}
+us --> DUT
+us --> TEST
+us --> SIM
+us --> ENV
+@enduml
