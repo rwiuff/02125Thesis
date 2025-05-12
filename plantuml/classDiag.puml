@@ -1,0 +1,86 @@
+@startuml classDiag
+package brewer{
+class Batch{
+    - String name
+    - ArrayList<String> steps
+    - HashMap<String, Signal> signals
+    - HashMap<String, ArrayList<String>> assertions
+    + void step()
+    + void peek(Signal)
+    + void poke(Signal, BigInt)
+    + void addSignal(Signal)
+    + void expect(Signal, BigInt)
+    + void Assert(Signal, Signal, int, Operator, Brewer)
+    + boolean assertions()
+}
+class Brewer{
+    - ArrayList<Testbench> testbenches
+    - int clocks
+    - String dut
+    + void grind()
+    - void write(Testbench)
+    - void createFile(Testbench)
+    + void runDUT()
+    + void clock(int)
+    + void brew(Batch)
+}
+enum Operator{
+    eq,
+    neq,
+    gt,
+    geq,
+    leq,
+    and,
+    or,
+    not
+    + String toString()
+}
+class Signal{
+    - String name
+    - String declaration
+    - int size
+}
+class Testbench{
+    - ArrayList<String> preamle
+    - ArrayList<String> end
+    - ArrayList<String> test
+    - String dut
+    - int clock
+    - String name
+    - String testName
+    + void populate()
+    + ArrayList<String> getLines()
+    + void add(String)
+}
+}
+package forge{
+class Forge<< (S,#FF7700) Singleton >>{
+    - Forge instalse
+    - boolean wsl
+    - ArrayList<Brewer> brewers
+    - ArrayList<ArrayList<String>> orders
+    + Forge getInstance()
+    + void enableWSL(bool)
+    - ArrayList<String> wsl()
+    + void addBrewer(Brewer)
+    + void simulate()
+    + void prelude()
+    + void returnResults(ArrayList<Order>)
+}
+class Makefile{
+    - HashMap<String, ArrayList<String>> menu
+    - void write()
+    - void createFile()
+}
+}
+class SteelBrew{
+    + void clean()
+    + void cleanObj()
+    + void cleanAux()
+}
+Batch <-- Operator
+Batch <-- Signal
+Brewer *--"0.." Testbench
+Makefile -up-> Forge
+Forge o-left"0.." Brewer
+@enduml

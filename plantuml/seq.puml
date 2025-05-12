@@ -1,0 +1,21 @@
+@startuml sequenceDiag
+actor User as us
+participant Brewer as brew
+participant Testbench as tb
+participant Batch as batch
+participant Forge as f
+activate f
+us -> brew**: addDUT()
+activate brew
+us -> batch**: addTest()
+activate batch
+us -> brew: brew(Batch)
+brew -> batch: getTests()
+batch --> brew: tests
+brew -> tb**: createTB\n(tests)
+activate tb
+us -> f: simulate()
+f -> brew: getTB()
+brew --> f: Testbench
+f -> Verilator: Verilate
+activate Verilator

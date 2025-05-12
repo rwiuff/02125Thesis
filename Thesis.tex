@@ -50,6 +50,7 @@
 \usepackage{xspace}
 \usepackage{tikz}
 \usetikzlibrary{positioning, automata}
+\usepackage{dirtree}
 
 % ------------------------------------------
 % For semantic tableaux insert treex snippet
@@ -87,9 +88,13 @@
 \usepackage{biblatex}
 \addbibresource{bibliography.bib}
 
-% ----------------------------------------
-% For minted listing insert mintex snippet
-% ----------------------------------------
+\usepackage[newfloat]{minted}
+\setminted{fontsize=\small,
+           linenos=true}
+\usemintedstyle{tango}
+\SetupFloatingEnvironment{listing}{listname=Listings}
+\captionsetup[listing]{position=top, skip=-1pt}
+\usepackage{dirtree}
 
 %Definitions and new commands
 \newcommand{\degr}{^{\circ}}
@@ -201,9 +206,8 @@
 \input{sections/02Introduction}
 \input{sections/03Problem}
 \input{sections/04Design}
-\newpage
 \input{sections/05Implementation}
-\input{sections/06Testing}
+\input{sections/06TestingAndResults.tex}
 \input{sections/07Conclusion}
 %Bibliography herunder:
 \newpage

@@ -33,22 +33,22 @@ Expanding on \cref{fig:usecases}, the use case diagram is expanded as seen on \c
     \includegraphics[width=.3\textwidth]{out/plantuml/usecase2/usecase2.eps}
 \end{figure}
 \subsection{The Brewer}
-The Brewer is the primary interface. There are several ways of going about this object handling multiple DUT's and tests. One aspect could be to hold Lists or Maps of the tests and devices, and then use methods to get these, and couple them accordingly. This have the advantage that from a schematic point of view it simplifies the program. However, once tests are applied to different devices, all contained within the same object, one has to keep track of internal links. The first major decision in the design phase was as such:
+The Brewer is the primary interface. There are several ways of going about this object handling multiple DUT's and tests. One aspect could be to hold Lists or Maps of the tests and devices, and then use methods to get these, and couple them accordingly. This has the advantage that from a schematic point of view it simplifies the program. However, once tests are applied to different devices, all contained within the same object, one has to keep track of internal links. The first major decision in the design phase was as such:
 \begin{enumerate}
     \item Give a Brewer to each DUT
     \item Assign tests to each Brewer
 \end{enumerate}
-This means more objects are created, but the Brewer object itself has a lot less responsibility in terms of tracking the interal links.\newline
-A squence diagram on \cref{fig:seqBrew} shows this initial idea.
+This means more objects are created, but the Brewer object itself has a lot less responsibility in terms of tracking the internal links.\newline
+A sequence diagram on \cref{fig:seqBrew} shows this initial idea.
 \begin{figure}
     \centering
     \caption{Sequence diagram showing the idea behind the Brewer}\label{fig:seqBrew}
     \includegraphics[width=.3\textwidth]{out/plantuml/Brewer/brewer.eps}
 \end{figure}
 \subsection{The Forge}
-The Brewers complement, the Forge handles another job, entirely. This class has to handle the responsibility of taking the tests from the Brewers and hand them down to the third-party tool. This prompts some considerations, namely how to launch other programs with very specifik parameters and how to communicate with these programs.
+The Brewers complement, the Forge handles another job, entirely. This class has to handle the responsibility of taking the tests from the Brewers and hand them down to the third-party tool. This prompts some considerations, namely how to launch other programs with very specific parameters and how to communicate with these programs.
 \subsubsection{Verilator and the Forge}
-The third-party software chosen is Verilator. It is opensource and very quick at executing simulations. Verilator works like this:
+The third-party software chosen is Verilator. It is open-source and very quick at executing simulations. Verilator works like this:
 \begin{enumerate}
     \item The user prepares testbenches describing the testing environment and the tests
     \item Verilator takes the testbench and some DUT as input and makes the files for compiling a C++ program
@@ -57,11 +57,32 @@ The third-party software chosen is Verilator. It is opensource and very quick at
 
 This puts constrains on the design of the program. The Forge needs to call Verilator multiple times and then needs to run the compiled program. To ease this, the program creates a Makefile and executes through this. Simple redirects of stdout means that the Forge can collect the output from Verilator and the simulation. 
 \subsubsection{Concurrency}
-Up until now the main idea was to take a Brewer pointing to a DUT, add some tests and then hand it off to the Forge for Verilating, compiling and running the simulation. This poses one issue: This way of evaluating the program means that tests can only be parralised in terms of Verilator's internal multithreading, and then one DUT with all it's test per thread. Verilator's internal multithreading is outside the scope of this project, so the only options is to get creative with the way tests are run. Normally when using Verilator, one testbench with all testing is run per DUT. The design choice here was to split up the tests, such that each test, or set of tests, gets its own testbench and its own compiled program. This way tests can be carried out in parralel by launching each workflow on different threads.
+Up until now the main idea was to take a Brewer pointing to a DUT, add some tests and then hand it off to the Forge for Verilating, compiling and running the simulation. This poses one issue: This way of evaluating the program means that tests can only be parallised in terms of Verilator's internal multithreading, and then one DUT with all its test per thread. Verilator's internal multithreading is outside the scope of this project, so the only option is to get creative with the way tests are run. Normally when using Verilator, one testbench with all testing is run per DUT. The design choice here was to split up the tests, such that each test, or set of tests, gets its own testbench and its own compiled program. This way tests can be carried out in parallel by launching each workflow on different threads.
 \subsubsection{Coroutines}
-It was of great interest to involve coroutines in the project. Java does not support coroutines natively so workarounds were investigated. To this end, it turns out most coroutine frameworks and plugins are 6+ years old. They do not support newer Java versions, and thus not newer Java functionality. The design choice here was to use threads to execute tests.
+It was of great interest to involve coroutines in the project. Java does not support coroutines natively, so workarounds were investigated. To this end, it turns out most coroutine frameworks and plugins are 6+ years old. They do not support newer Java versions, and thus not newer Java functionality. The design choice here was to use threads to execute tests.
 \subsection{Testbench}
 The workflow of Verilator and the design choice of splitting up tests into separate executables meant that the definition of tests were somewhat straightforward. The Brewer would have Testbench objects. Whenever tests are defined they are added to this object, and just before simulation, testbench files are created based on the content of the object. The testbenches have to have unique names, otherwise the Verilator executable and GNU Make will be unable to execute the correct benches.
 \subsection{Batch}
-While the Testbench class is able to contain all tests put in, it is basically a collection of strings. Furthermore, it is often desireable to control the sequence in which tests are executed, as the result from one test might affect the other. Or if one has to test what happens when manipulating signals inside the DUT. A new class is introduced to handle a sequence of tests, along with logic transforming simple methods into cumbersome strings for the testbench. The Batch class keeps a record of signals and tests involved in some scenario and when ready, creates a testbench with these tests executed as they are added by the user.
+While the Testbench class is able to contain all tests put in, it is basically a collection of strings. Furthermore, it is often desirable to control the sequence in which tests are executed, as the result from one test might affect the other. Or if one has to test what happens when manipulating signals inside the DUT. A new class is introduced to handle a sequence of tests, along with logic transforming simple methods into cumbersome strings for the testbench. The Batch class keeps a record of signals and tests involved in some scenario and when ready, creates a testbench with these tests executed as they are added by the user.
+The functionalities here starts with:
+\begin{itemize}
+    \item \textbf{Peek} Read signal
+    \item \textbf{Poke} Change signal
+    \item \textbf{Step} Increment DUT clock
+\end{itemize}
 \subsection{Assertions}
+The last leg of the project is assertion support. Assertions is a formal way of ensuring certain properties of a design, either in the scope of its entire execution or in certain scenarios. SystemVerilog has long supported assertions, however Verilator has limited support for assertions. For this reason some core functionality is designed and implemented, namely relations between signals in the DUT, using logic and relational operators.
+\subsection{Design overview}
+The workflow is illustrated by the sequence diagram shown on \cref{fig:usecasesfinal}.
+\begin{figure}
+    \centering
+    \caption{Final workflow example as a sequence diagram}\label{fig:usecasesfinal}
+    \includegraphics[width=.5\textwidth]{out/plantuml/seq/sequenceDiag.eps}
+\end{figure}
+The class diagram is shown on \cref{fig:classDiag}.
+\begin{figure}
+    \centering
+    \caption{Class diagram showing the structure of SteelBrew}\label{fig:classDiag}
+    \includegraphics[width=\textwidth]{out/plantuml/classDiag/classDiag.eps}
+\end{figure}
+Notice that the Forge is a singleton. This was chosen to make access to the Forge easier and most importantly ensure that only one Forge is instantiated. The Forge handles the executed threads, and multiple instances could lead to race conditions. The Barista class has been omitted from the diagram but will be discussed further in \cref{sec:05}.
