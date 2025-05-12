@@ -1,6 +1,7 @@
 % LTeX: language=en-GB
 % !TeX root = ..\Thesis.tex
 \section{Introduction}\label{sec:02}
+\todo[inline]{Related works}
 In the world of designing integrated systems on chips, it is crucial to describe these in some hardware description language in order to test designs before actual manufacturing. Part of testing these designs include writing tests in some framework supporting some abstraction and then simulate the chip using the applied framework, a process known as \emph{verification}. One verifies the \emph{Device Under Test} or DUT. One of the most common methodologies is \emph{Universal Verification Methodology}, or simply UVM.
 \subsection{The UVM methodology}
 Using UVM, one have to built testbench components. These include e.g. drivers for converting tests into proper DUT stimulus, monitors for reading the state of the DUT and scoreboards for comparing expected behaviour to actual behaviour, etc. UVM has the great benefit, that once these components have been defined, they can be reused within the scope of some system of designs. This means a high overhead, with high reusability.

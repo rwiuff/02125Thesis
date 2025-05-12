@@ -166,16 +166,18 @@
 \titlespacing{\subsubsection}
 {12pc}{1.5ex plus .1ex minus .2ex}{1pc}
 
-% \title{\vspace{-5em}\hspace{-2em}\includegraphics[width=.3\textwidth]{graphics/steelbrew.eps}\lb\vspace{.5em}\Huge\scshape\color{DTUred} \titl\lb\vspace{-4mm}\rule{4cm}{0.5mm}\lb\Large{\presub \aftersub}}
-% \author{by \auth \textbf{\NO}\lb \href{mailto:s163977@dtu.dk}{s163977@dtu.dk}\vspace{2.5em}\lb Supervisor: Martin Schoeberl\lb\href{mailto:masca@dtu.dk}{masca@dtu.dk}}
-% \date{\datum}
+\makeatletter
+\newcommand{\github}[1]{%
+   \href{#1}{\color{DTUred}\faGithub}%
+}
+\makeatother
 
 \title{\vspace{-5em}\hspace{-2em}\includegraphics[width=.3\textwidth]{graphics/steelbrew.eps}\lb\vspace{.5em}\Huge\scshape\color{DTUred} \titl\lb\vspace{-4mm}\rule{4cm}{0.5mm}\lb\Large{\presub \aftersub}}
 \date{\datum}
 \preauthor{\begin{center}
         \large \lineskip 0.5em%
         \begin{tabular}[t]{ll}}
-            \author{by & \\ \auth \textbf{\NO} & \href{mailto:s163977@dtu.dk}{s163977@dtu.dk}\vspace{2.5em} \\ Supervisor & \\ Martin Schoeberl & \href{mailto:masca@dtu.dk}{masca@dtu.dk}}
+            \author{by & \\ \auth \textbf{\NO} & \href{mailto:s163977@dtu.dk}{s163977@dtu.dk} \\ \github{https://github.com/rwiuff/SteelBrew}\ \href{https://github.com/rwiuff/SteelBrew}{github.com/rwiuff/SteelBrew}\vspace{2.5em} \\ Supervisor & \\ Martin Schoeberl & \href{mailto:masca@dtu.dk}{masca@dtu.dk}}
             \postauthor{\end{tabular}\par\end{center}}
 
 \maketitle

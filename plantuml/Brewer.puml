@@ -1,0 +1,13 @@
+@startuml brewer
+actor User as us
+participant Brewer as brew
+participant "Map<TestObj>" as test
+us -> brew **: addDUT()
+activate brew
+us -> brew : addTest()
+brew -> test **: addTest()
+activate test
+brew --> us: "Test added"
+us -> brew: addTest()
+brew -> test: addTest()
+brew --> us: "Test added"
