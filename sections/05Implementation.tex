@@ -3,12 +3,12 @@
 \section{Implementation}\label{sec:05}
 In this section the practical implementation is showcased and discussed. Each class is briefly summarised, and interesting solutions are shown.
 \subsection{Build environment}
-The project exists in a Gradle\footnote{Gradle on the web: \href{https://gradle.org/}{gradle.org}} build environment consisting of an app and a library. The reasoning is simple: This project is developed as a library that the developer can import into their own Java code. The app is a merely a demo of how the library can be used, while the library itself is the project. If the project should be published Gradle will easily publish it to the Maven central repo. The demo app is in the \texttt{app} folder and the project is in the \texttt{steelbrew} folder. The rootfolder contains two alu written in SystemVerilog to experiment on.
+The project exists in a Gradle\footnote{Gradle on the web: \href{https://gradle.org/}{gradle.org}} build environment consisting of an app and a library. The reasoning is simple: This project is developed as a library that the developer can import into their own Java code. The app is a merely a demo of how the library can be used, while the library itself is the project. If the project should be published Gradle will easily publish it to the Maven central repo. The demo app is in the \texttt{app} folder and the project is in the \texttt{steelbrew} folder. The root folder contains two ALUs written in SystemVerilog to experiment on.
 \subsection{SteelBrew}
-This class is the entrypoint for the project. It has two purposes. First it instantiates the Forge as a singleton. Second it has auxilary functions for cleaning files produced during simulation.
+This class is the entry point for the project. It has two purposes. First it instantiates the Forge as a singleton. Second it has auxiliary functions for cleaning files produced during simulation.
 \subsection{Brewer}
-The brewer class is constructed for each DUT to be tested. Upon construction it adds itself to the Forge.\newline
-When the user is ready to simulate the Forge calls the \mintinline{java}|void grind()| method that creates and fills out testbench files. The \mintinline{java}|void brew(Batch batch)| method shows how a batch of tests are used to create a testbench. The method is shown on \cref{lst:brew}.
+The brewer class is constructed for each DUT to be tested. Upon construction, it adds itself to the Forge.\newline
+When the user is ready to simulate the Forge calls the \mintinline{java}|void grind()| method that creates and fills out testbench files. The \mintinline{java}|void brew(Batch batch)| method shows how a batch of tests is used to create a testbench. The method is shown on \cref{lst:brew}.
 \begin{listing}
     \centering
     \caption{Brewers brew method for creating a testbench from a batch of tests}\label{lst:brew}
@@ -49,30 +49,30 @@ When the user is ready to simulate the Forge calls the \mintinline{java}|void gr
         preamble.add("    V" + testName + " *dut = new V" + testName + ";\n");
     \end{minted}
 \end{listing}
-The Testbench class holds all of the necessary lines to make a testbench work. The \mintinline{java}|void add(String string)| method can then be used to add test lines to the testbench. The Brewer then assembles the file. \cref{lst:tb} shows how the testbench names are assigned. When a testbench is created the variable \texttt{testName} combines the name of the DUT, with the name of the test.
+The Testbench class holds all the necessary lines to make a testbench work. The \mintinline{java}|void add(String string)| method can then be used to add test lines to the testbench. The Brewer then assembles the file. \cref{lst:tb} shows how the testbench names are assigned. When a testbench is created the variable \texttt{testName} combines the name of the DUT, with the name of the test.
 \subsection{Batch}
 The Batch class defines the test methods \mintinline{java}|step()|, \mintinline{java}|peek()|, \mintinline{java}|poke()|, \mintinline{java}|expect()| and \mintinline{java}|Assert()|. The peek method is interesting here, as it writes to stdout with its result. This can be seen on \cref{lst:peek}.
 \begin{listing}
     \centering
     \caption{The peek method}\label{lst:peek}
-    \begin{minted}{java}
+    \begin{minted}[breaklines]{java}
     public void peek(Signal signal) {
         steps.add("std::cout << \"\\n Peek on " + signal.getName() + ": \" << (int)(dut->" + signal.getName()
                 + ") << \" @ simtime: \" << sim_time << std::endl;\n");
     }
     \end{minted}
 \end{listing}
-The assert method is also of interest. It takes two signals and an operator and then constructs a C++ method, that looks for some comparison, depending on the chosen operator. In \cref{lst:brew} the assertions are put into a testbench. The values of the assertion hashmap contains the method definition. The key is the function call. In \cref{lst:brew} the methods are defined early in the testbench and the call is the placed in a loop that evaluates every clock cycle, thus the assertion has to hold throughout the DUT evaluation. The two helper classes Operator and Signal will briefly be explained.
+The assert method is also of interest. It takes two signals and an operator and then constructs a C++ method, that looks for some comparison, depending on the chosen operator. In \cref{lst:brew} the assertions are put into a testbench. The values of the assertion HashMap contains the method definition. The key is the function call. In \cref{lst:brew} the methods are defined early in the testbench and the call is the placed in a loop that evaluates every clock cycle, thus the assertion has to hold throughout the DUT evaluation. The two helper classes Operator and Signal will briefly be explained.
 \subsubsection{Operator}
 The operator is a Java enum that comprises all the operators for comparison. The enum has a \mintinline{java}|toString()| method. If an assertion is added as such,\newline\mintinline{java}|batch.Assert(signal, signal2, 1, Operator.neq, alu);| the assert method uses the toString method to convert \texttt{neq} to ``\(!=\)'' when inserted in the C++ method.
 \subsubsection{Signal}
 The Signal class is a POJO\footnote{\textbf{P}lain \textbf{O}ld \textbf{J}ava \textbf{O}bject} that defines the signal with a name, signal size and declaration, when used as a variable in C++.
 \subsection{Makefile}
-The Makefile class is used to create a GNU Make makefile to simplify process calls from the Forger. This can be seen on \cref{lst:make}.
+The Makefile class is used to create a GNU Make Makefile to simplify process calls from the Forger. This can be seen on \cref{lst:make}.
 \begin{listing}
     \centering
     \caption{The write method that creates the recipes for the verilation, compilation and execution of simulations}\label{lst:make}
-    \begin{minted}{java}
+    \begin{minted}[breaklines]{java}
     private void write() {
         try {
             FileWriter writer = new FileWriter("Makefile");
@@ -113,15 +113,15 @@ The Makefile class is used to create a GNU Make makefile to simplify process cal
     }
     \end{minted}
 \end{listing}
-Lines 8-11 gives the test recipe a name, and calls for a waveform creation. 14-26 then recursively goes throug the recipes:
+Lines 8-11 gives the test recipe a name, and calls for a waveform creation. 14-26 then recursively goes through the recipes:
 \begin{enumerate}
-    \item The waveform depends on the executable
-    \item The executable depends on the verilation stamp (an empty file telling Make that verilation is not necessary on repeated makes)
-    \item The stamp then depends on verilating the testbench and DUT
+    \item The waveform depends on the executable.
+    \item The executable depends on the verilation stamp (an empty file telling Make that verilation is not necessary on repeated makes).
+    \item The stamp then depends on verilating the testbench and DUT.
 \end{enumerate}
 \subsection{Forge}
-The Forge is where processes are handled. It is instantiated as a singleton, which means it is always accessible and only one copy exists, making race-conditions less likely. The constructor also allows for lazy initialisation, meaning it is initialised when the \mintinline{java}|Forge.getInstance()| method is first called.\newline
-Forge has a \mintinline{java}|wsl()| method that solves the problem that Verilator does not ship binaries for Windows. However if Windows Subsystem for Linux is installed with Verilator, Verilator can be called from a Windows terminal with the command \mintinline{bash}|wsl -d Ubuntu <Command>|.
-The Forge executes simulations by calling \mintinline{java}|prelude()| which prompts the brewers to create testbench files. Afterwards the method creates an instance of Makefile and collects a list of all tests to be executed. The lists contains the command call for the process to start. Forge then constructs an instance of the Barista class, which in turn deals with a multithreaded approach.
+The Forge is where processes are handled. It is instantiated as a singleton, which means it is always accessible, and only one copy exists, making race-conditions less likely. The constructor also allows for lazy initialisation, meaning it is initialised when the \mintinline{java}|Forge.getInstance()| method is first called.\newline
+Forge has a \mintinline{java}|wsl()| method that solves the problem that Verilator does not ship binaries for Windows. However, if Windows Subsystem for Linux is installed with Verilator, Verilator can be called from a Windows terminal with the command \mintinline{bash}|wsl -d Ubuntu <Command>|.
+The Forge executes simulations by calling \mintinline{java}|prelude()| which prompts the brewers to create testbench files. Afterwards the method creates an instance of Makefile and collects a list of all tests to be executed. The lists contain the command call for the process to start. Forge then constructs an instance of the Barista class, which in turn deals with a multithreaded approach.
 \subsubsection{Barista}
-The Barista class is a helper class for the Forge class, that creates stringbuilders that in turn executes the ``make'' command and saves stdout and stderr. Barista runs a test on its own thread, enabling concurrent simulation. Upon completion Barista calls \mintinline{java}|Forge.returnResults()|, which then prints the output of the tests, thus completing the simulations.
+The Barista class is a helper class for the Forge class, that creates string builders that in turn executes the ``make'' command and saves stdout and stderr. Barista runs a test on its own thread, enabling concurrent simulation. Upon completion Barista calls \mintinline{java}|Forge.returnResults()|, which then prints the output of the tests, thus completing the simulations.

@@ -14,7 +14,7 @@
 \newcommand{\NO}{s163977\xspace}
 \newcommand{\presub}{02125\xspace}
 \newcommand{\aftersub}{Bachelor Project\xspace}
-\newcommand{\datum}{\emph{Draft}}
+\newcommand{\datum}{\nth{12} of May 2025}
 %Symbols and scientifics
 \usepackage{bm}
 \usepackage{physics}
@@ -188,7 +188,7 @@
 \maketitle
 
 \begin{abstract}
-    \todo[inline]{Add abstract}
+    This project investigates the possibility of using a custom framework developed in Java to create testbenches and run these using Verilator, to verify digital circuit designs. The project implements core verification testing techniques, and successfully manage to evaluate these using multithreading. The project investigates the possibility of using Assertion Based Verification using Verilator, however does not succeed in doing so. The report finalise with showcasing the projects workflow for simple verification tests and discusses further possible improvements.
 \end{abstract}
 
 \pagenumbering{arabic}
@@ -196,7 +196,6 @@
 \thispagestyle{empty}
 \setcounter{page}{0}
 \newpage
-\listoftodos
 \tableofcontents
 \addtocontents{toc}{~\hfill\textbf{Page}\par}
 \setcounter{page}{1}
@@ -207,7 +206,7 @@
 \input{sections/03Problem}
 \input{sections/04Design}
 \input{sections/05Implementation}
-\input{sections/06TestingAndResults.tex}
+\input{sections/06Results.tex}
 \input{sections/07Conclusion}
 %Bibliography herunder:
 \newpage
