@@ -1,1 +1,2 @@
-# 02125Thesis
+# 02125 Bachelor's Thesis
+This repo contains the LaTeX files for the Bachelor's thesis by Rasmus Wiuff ([rwiuff@gmail.com](mailto:rwiuff@gmail.com)), written during the spring semester of 2025 at the Technical University of Denmark.
