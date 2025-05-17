@@ -1,6 +1,6 @@
 % LTeX: language=en-GB
 % !TeX root = ..\Thesis.tex
-\section{Implementation}\label{sec:05}
+\section{Implementation}\label{sec:06}
 In this section the practical implementation is showcased and discussed. Each class is briefly summarised, and interesting solutions are shown.
 \subsection{Build environment}
 The project exists in a Gradle\footnote{Gradle on the web: \href{https://gradle.org/}{gradle.org}} build environment consisting of an app and a library. The reasoning is simple: This project is developed as a library that the developer can import into their own Java code. The app is a merely a demo of how the library can be used, while the library itself is the project. If the project should be published Gradle will easily publish it to the Maven central repo. The demo app is in the \texttt{app} folder and the project is in the \texttt{steelbrew} folder. The root folder contains two ALUs written in SystemVerilog to experiment on.
