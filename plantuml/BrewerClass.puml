@@ -1,0 +1,13 @@
+@startuml BrewerClass
+class Brewer{
+    - ArrayList<Testbench> testbenches
+    - int clocks
+    - String dut
+    + void grind()
+    - void write(Testbench)
+    - void createFile(Testbench)
+    + void runDUT()
+    + void clock(int)
+    + void brew(Batch)
+}
+@enduml

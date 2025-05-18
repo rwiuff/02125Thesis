@@ -1,0 +1,14 @@
+@startuml TestbenchClass
+class Testbench{
+    - ArrayList<String> preamle
+    - ArrayList<String> end
+    - ArrayList<String> test
+    - String dut
+    - int clock
+    - String name
+    - String testName
+    + void populate()
+    + ArrayList<String> getLines()
+    + void add(String)
+}
+@enduml

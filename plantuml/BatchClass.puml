@@ -1,0 +1,15 @@
+@startuml BatchClass
+class Batch{
+    - String name
+    - ArrayList<String> steps
+    - HashMap<String, Signal> signals
+    - HashMap<String, ArrayList<String>> assertions
+    + void step()
+    + void peek(Signal)
+    + void poke(Signal, BigInt)
+    + void addSignal(Signal)
+    + void expect(Signal, BigInt)
+    + void Assert(Signal, Signal, int, Operator, Brewer)
+    + boolean assertions()
+}
+@enduml

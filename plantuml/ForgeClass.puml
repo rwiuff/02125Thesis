@@ -1,0 +1,15 @@
+@startuml ForgeClass
+class Forge<< (S,#FF7700) Singleton >>{
+    - Forge instalse
+    - boolean wsl
+    - ArrayList<Brewer> brewers
+    - ArrayList<ArrayList<String>> orders
+    + Forge getInstance()
+    + void enableWSL(bool)
+    - ArrayList<String> wsl()
+    + void addBrewer(Brewer)
+    + void simulate()
+    + void prelude()
+    + void returnResults(ArrayList<Order>)
+}
+@enduml
