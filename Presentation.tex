@@ -46,10 +46,10 @@
         \item Chip design requires verification
         \item Verification most commonly done using UVM
         \item Commonly used frameworks: Chisel, SpinalHDL, pyuvm
-        \begin{itemize}
-            \item pyuvm requires UVM approach
-            \item Chisel, SpinalHDL requires adapting to Scala
-        \end{itemize}
+              \begin{itemize}
+                  \item pyuvm requires UVM approach
+                  \item Chisel, SpinalHDL requires adapting to Scala
+              \end{itemize}
         \item ABV and formal verification improves the verification step
     \end{itemize}
     \begin{center}
@@ -75,14 +75,14 @@
             Simulation driver & Launching and handling output from Verilator \\
             Peek-poke-step    & Basic verification tests                     \\
             Assertions        & SVA assertions                               \\
-            Test-translation  & Translate tests into a testbench             \\
+            Test-translation  & Translate tests into a test bench            \\
             Concurrency       & Concurrent execution of the tests            \\
             \bottomrule
         \end{tabular}
     \end{center}
 \end{frame}
 \section{Design}
-\begin{frame}{Usecases}
+\begin{frame}{Use cases}
     \begin{columns}
         \begin{column}{.45\textwidth}
             \begin{itemize}
@@ -104,7 +104,7 @@
             \begin{itemize}
                 \item Adding devices
                 \item Handling test logic
-                \item Preparing testbenches
+                \item Preparing test benches
             \end{itemize}
         \end{column}
         \begin{column}{.45\textwidth}
@@ -205,7 +205,6 @@ public void populate() {
   main.add("    Verilated::traceEverOn(true);\n");
   ...
   main.add("    m_trace->open(\"waveform" + testName + ".vcd\");\n");
-  ...
   end.add("    exit(EXIT_SUCCESS);\n");
 }
 public ArrayList<String> getLines() {
@@ -343,7 +342,7 @@ Forge.simulate();
         \item Assertions are mostly time independent
         \item Testbench works, but lacks sectioning
         \item Including a run loop for assertions exclude peek-poke-step
-        \item The devil is in the details \mintinline{java}|assertions.put(methodName + "(dut, sim_time)", assertion);|
+        \item The devil is in the details: \mintinline{java}|assertions.put(methodName + "(dut, sim_time)", assertion);|
     \end{itemize}
 \end{frame}
 \section{Further development}
@@ -355,13 +354,13 @@ Forge.simulate();
                   \item Fix assert \faCheckCircle
               \end{itemize}
         \item Employ Verilator multithreading \faTimesCircle
-        \item Expand assertions with assume and cover logic \faTimesCircle
+        \item Expand assertions with cover logic \faTimesCircle
     \end{itemize}
 \end{frame}
 \section{Conclusion}
 \begin{frame}{Conclusion}
     \begin{itemize}
-        \item Did not reach final goal: Implementing Assertion Based Verification.
+        \item Did not reach final goal: Implementing Assertion Based Verification
         \item SteelBrew communicates with Verilator
         \item SteelBrew uses Makefiles
         \item Basic testing methods
@@ -389,7 +388,7 @@ Forge.simulate();
             \begin{enumerate}
                 \item Do a while in each testbench
                 \item Assertion methods defined before main method
-                \item Each test inclosed in simulation-time condition
+                \item Each test enclosed in simulation-time condition
                 \item Assertion method runs every cycle
             \end{enumerate}
         \end{column}
